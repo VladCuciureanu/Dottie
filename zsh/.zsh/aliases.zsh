@@ -51,6 +51,13 @@ alias push="git push"
 
 alias c='clear'
 
+## PNPM
+alias pb="pnpm build"
+alias pd="pnpm dev"
+alias pf="pnpm format"
+alias pc="pnpm check-types"
+alias pl="pnpm lint"
+
 ## List all files colorized in long format
 alias l="eza --icons -lF"
 

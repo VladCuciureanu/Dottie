@@ -1,8 +1,8 @@
 # Load sharded config
-[[ -f ~/.zsh/aliases.zsh ]] && source ~/.zsh/aliases.zsh
 [[ -f ~/.zsh/exports.zsh ]] && source ~/.zsh/exports.zsh
 [[ -f ~/.zsh/path.zsh ]] && source ~/.zsh/path.zsh
 [[ -f ~/.zsh/history.zsh ]] && source ~/.zsh/history.zsh
+[[ -f ~/.zsh/aliases.zsh ]] && source ~/.zsh/aliases.zsh
 
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
