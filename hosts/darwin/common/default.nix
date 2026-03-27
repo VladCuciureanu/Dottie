@@ -1,0 +1,62 @@
+{ pkgs, ... }: {
+  imports = [
+    ./preferences.nix
+  ];
+
+  # Nix settings
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nixpkgs.config.allowUnfree = true;
+
+  # System packages (macOS only)
+  environment.systemPackages = with pkgs; [
+    curl
+  ];
+
+  # Let nix-darwin manage Homebrew for GUI apps (casks)
+  homebrew = {
+    enable = true;
+    onActivation = {
+      autoUpdate = true;
+      cleanup = "zap";
+      upgrade = true;
+    };
+    casks = [
+      "1password"
+      "adobe-acrobat-reader"
+      "arc"
+      "dbeaver-community"
+      "discord"
+      "moonlight"
+      "ngrok"
+      "orbstack"
+      "postman"
+      "raycast"
+      "sanesidebuttons"
+      "slack"
+      "spotify"
+      "steam"
+      "the-unarchiver"
+      "unity-hub"
+      "visual-studio-code"
+      "warp"
+      "whatsapp"
+      "zoom"
+    ];
+    brews = [
+      "blueutil"
+    ];
+  };
+
+  # Fonts
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.hack
+  ];
+
+  # System settings
+  security.pam.services.sudo_local.touchIdAuth = true;
+
+  # Used for backwards compatibility
+  system.stateVersion = 6;
+}

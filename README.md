@@ -1,40 +1,78 @@
-# 🌌 Dotfiles
+# Dotfiles
 
-This repository serves as my way to help me setup and maintain my Mac. It takes the effort out of installing everything manually. Everything needed to setup macOS in my preferred way is detailed in this readme. Feel free to explore, learn and copy parts for your own dotfiles. Enjoy!
+Cross-platform (macOS + Linux) dotfiles managed with [Nix](https://nixos.org/), [nix-darwin](https://github.com/LnL7/nix-darwin), and [Home Manager](https://github.com/nix-community/home-manager).
 
-## Backup your data
+## Prerequisites
 
-If you're migrating from an existing Mac, you should first make sure to backup all of your existing data. Go through the checklist below to make sure you didn't forget anything before you migrate.
+Install Nix with flakes enabled:
 
-- Did you commit and push any changes/branches to your git repositories?
-- Did you remember to save all important documents from non-iCloud directories?
-- Did you save all of your work from apps which aren't synced through iCloud?
-- Did you remember to export important data from your local database?
+```sh
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+```
 
-## Setting up your Mac
+## Setup
 
-After backing up your old Mac you may now follow these install instructions to setup a new one.
+### macOS
 
-1. Update macOS to the latest version through system preferences
+```sh
+git clone git@github.com:VladCuciureanu/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+nix run nix-darwin -- switch --flake .#Razumikhin
+```
 
-2. Setup your Git's SSH keys by copying your existing keys into ~/.ssh
+After the first build:
 
-3. Clone this repo to `~/.dotfiles` with:
+```sh
+darwin-rebuild switch --flake ~/.dotfiles#Razumikhin
+```
 
-   ```zsh
-   git clone --recursive git@github.com:VladCuciureanu/dotfiles.git ~/.dotfiles
+### Linux
+
+```sh
+git clone git@github.com:VladCuciureanu/dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+nix run home-manager -- switch --flake .#Frank
+```
+
+After the first build:
+
+```sh
+home-manager switch --flake ~/.dotfiles#Frank
+```
+
+## Adding a new host
+
+1. Create `hosts/darwin/<hostname>/default.nix` (macOS) or `hosts/linux/<hostname>/default.nix` (Linux)
+2. Import `../common` in that file for shared platform config
+3. Add one line to `flake.nix`:
+   ```nix
+   # macOS
+   "MyMac" = mkDarwin { hostname = "MyMac"; };
+   # Linux
+   "MyBox" = mkLinux { hostname = "MyBox"; };
    ```
 
-4. Run the installation with:
+## Structure
 
-   ```zsh
-   cd ~/.dotfiles && ./fresh.sh
-   ```
-
-5. Restart your computer to finalize the process
-
-Your Mac is now ready to use!
+```
+.dotfiles/
+├── flake.nix                        # Entry point
+├── hosts/
+│   ├── darwin/
+│   │   ├── common/                  # Shared macOS config (casks, prefs, fonts)
+│   │   └── razumikhin/              # Host-specific overrides
+│   └── linux/
+│       ├── common/                  # Shared Linux config
+│       └── frank/                   # Host-specific overrides
+├── home/                            # Shared home-manager modules
+│   ├── shell.nix                    # zsh, starship, fzf, zoxide
+│   ├── neovim.nix                   # Neovim + NvChad
+│   ├── packages.nix                 # CLI tools
+│   └── git.nix                      # Git config
+└── config/
+    └── nvim/                        # NvChad configuration
+```
 
 ## License
 
-This source code is is free and unencumbered software released into the public domain. Go wild!
+Public domain ([Unlicense](LICENSE)).

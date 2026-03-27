@@ -1,2 +1,4 @@
-zsh/.config/raycast
 secrets.zsh
+result
+.direnv
+.DS_Store
