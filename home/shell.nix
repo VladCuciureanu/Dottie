@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ lib, config, ... }: {
   programs.zsh = {
     enable = true;
     autosuggestion.enable = true;
@@ -60,49 +60,50 @@
       EDITOR = "nvim";
     };
 
-    initExtraFirst = ''
-      # Add directories to PATH without duplicates
-      add_to_path() {
-        if [[ -d "$1" ]] && [[ ":$PATH:" != *":$1:"* ]]; then
-          export PATH="$1:$PATH"
-        fi
-      }
-      add_to_path "$HOME/.node/bin"
-    '';
+    initContent = lib.mkMerge [
+      (lib.mkBefore ''
+        # Add directories to PATH without duplicates
+        add_to_path() {
+          if [[ -d "$1" ]] && [[ ":$PATH:" != *":$1:"* ]]; then
+            export PATH="$1:$PATH"
+          fi
+        }
+        add_to_path "$HOME/.node/bin"
+      '')
+      ''
+        # Source secrets if present
+        [[ -f ~/.zsh/secrets.zsh ]] && source ~/.zsh/secrets.zsh
 
-    initExtra = ''
-      # Source secrets if present
-      [[ -f ~/.zsh/secrets.zsh ]] && source ~/.zsh/secrets.zsh
+        # NVM setup
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
-      # NVM setup
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        # Pyenv setup
+        export PYENV_ROOT="$HOME/.pyenv"
+        [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+        command -v pyenv &>/dev/null && eval "$(pyenv init -)"
 
-      # Pyenv setup
-      export PYENV_ROOT="$HOME/.pyenv"
-      [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-      command -v pyenv &>/dev/null && eval "$(pyenv init -)"
+        # Keybindings
+        bindkey -e
+        bindkey '^p' history-search-backward
+        bindkey '^n' history-search-forward
+        bindkey '^[w' kill-region
 
-      # Keybindings
-      bindkey -e
-      bindkey '^p' history-search-backward
-      bindkey '^n' history-search-forward
-      bindkey '^[w' kill-region
+        # Completion styling
+        zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+        zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
+        zstyle ':completion:*' menu no
+        zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+        zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
-      # Completion styling
-      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-      zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
-      zstyle ':completion:*' menu no
-      zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-      zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+        # LM Studio
+        add_to_path "$HOME/.lmstudio/bin"
 
-      # LM Studio
-      add_to_path "$HOME/.lmstudio/bin"
-
-      # OrbStack
-      [[ -f ~/.orbstack/shell/init.zsh ]] && source ~/.orbstack/shell/init.zsh 2>/dev/null
-    '';
+        # OrbStack
+        [[ -f ~/.orbstack/shell/init.zsh ]] && source ~/.orbstack/shell/init.zsh 2>/dev/null
+      ''
+    ];
 
     oh-my-zsh = {
       enable = true;
