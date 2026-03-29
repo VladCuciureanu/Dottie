@@ -8,6 +8,10 @@
   networking.hostName = "Razumikhin";
   system.primaryUser = "vlad.cuciureanu";
 
-  # Host-specific overrides go here.
-  # e.g. extra casks, different preferences, etc.
+  homebrew.casks = [
+    "discord"
+    "moonlight"
+    "steam"
+    "unity-hub"
+  ];
 }

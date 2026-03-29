@@ -147,10 +147,11 @@
       };
 
       os.symbols = {
-        Windows = " ";
+        Windows = "";
         Arch = "󰣇";
-        Ubuntu = "";
+        Ubuntu = "";
         Macos = "󰀵";
+        NixOS = "";
       };
 
       username = {
