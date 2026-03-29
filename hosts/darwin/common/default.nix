@@ -3,8 +3,8 @@
     ./preferences.nix
   ];
 
-  # Nix settings
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Nix settings — nix.enable = false because Determinate manages the daemon
+  nix.enable = false;
   nixpkgs.config.allowUnfree = true;
 
   # System packages (macOS only)
