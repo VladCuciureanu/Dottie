@@ -74,10 +74,8 @@
         # Source secrets if present
         [[ -f ~/.zsh/secrets.zsh ]] && source ~/.zsh/secrets.zsh
 
-        # NVM setup
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+        # FNM setup
+        eval "$(fnm env --use-on-cd)"
 
         # Pyenv setup
         export PYENV_ROOT="$HOME/.pyenv"

@@ -4,11 +4,17 @@
     curl
     eza
     fd
+    gh
     ripgrep
     bat
+    bun
+    deno
+    pnpm
+    fnm
     pyenv
+    yarn
   ];
 
-  # NVM is managed via its install script, not Nix.
-  # It's sourced in shell.nix initExtra.
+  # FNM (Fast Node Manager) replaces NVM — managed via Nix.
+  # It's initialized in shell.nix initExtra.
 }
