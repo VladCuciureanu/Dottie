@@ -10,8 +10,5 @@
 
   homebrew.casks = [
     "discord"
-    "moonlight"
-    "steam"
-    "unity-hub"
   ];
 }

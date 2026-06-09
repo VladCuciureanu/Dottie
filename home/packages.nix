@@ -11,6 +11,10 @@
     deno
     pnpm
     fnm
+    dotnet-sdk_10
+    go
+    graphviz
+    opencode
     pyenv
     yarn
   ];

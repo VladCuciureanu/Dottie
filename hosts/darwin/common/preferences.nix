@@ -6,7 +6,7 @@
   system.defaults = {
     # Dock
     dock = {
-      autohide = true;
+      autohide = false;
       show-recents = false;
       mru-spaces = false;
       minimize-to-application = true;
@@ -31,10 +31,24 @@
       NSAutomaticSpellingCorrectionEnabled = false;
     };
 
-    # Trackpad
-    trackpad = {
-      Clicking = true;
-      TrackpadThreeFingerDrag = true;
+    CustomUserPreferences = {
+      "com.apple.symbolichotkeys" = {
+        AppleSymbolicHotKeys = {
+          # Set to 'Hyper (Shift + Option + Control + Command) + Space (ASCII 32, virtual keycode 49)' for Spotlight Search
+          "64" = {
+            enabled = true;
+            value = {
+              parameters = [32 49 1966080];
+              type = "standard";
+            };
+          };
+
+          # Disable 'Cmd + Option + Space' for Finder search window
+          "65" = {
+            enabled = false;
+          };
+        };
+      };
     };
-  };
+	};
 }
